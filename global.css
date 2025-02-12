@@ -1,3 +1,26 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+:root {
+  --primary: #0d6c9a;
+  --secondary: #f3cf36;
+  --tertiary: #1d6976;
+  --dark: #132134;
+}
+
+/* https://github.com/PaulBratslavsky/strapi-block-renderer-test/blob/main/frontend/src/app/globals.css */
+
+p {
+  @apply mb-4;
+}
+
+h4 {
+  @apply text-xl mb-2;
+}
+
+@media (prefers-color-scheme: dark) {
+  p {
+    @apply text-white;
+  }
+}
