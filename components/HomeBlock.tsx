@@ -4,7 +4,8 @@ import { BlocksRenderer } from '@strapi/blocks-react-renderer';
 import { View, Text, Image, TouchableOpacity } from 'react-native';
 import '@/global.css';
 import { Link } from 'expo-router';
-import { FontAwesome5, Ionicons } from '@expo/vector-icons';
+import { FontAwesome5 } from '@expo/vector-icons';
+import Animated, { FadeIn, Easing } from 'react-native-reanimated';
 
 export default function HomeBlock({
   homeInfo,
@@ -16,7 +17,7 @@ export default function HomeBlock({
   const blockContent = homeInfo?.content;
 
   return (
-    <View className=" w-full">
+    <Animated.View className=" w-full" entering={FadeIn.duration(300).easing(Easing.ease)}>
       <Image source={{ uri: homeInfo?.image }} className="w-full h-40" />
       <View className="p-4">{blockContent && <BlocksRenderer content={blockContent} />}</View>
       <Link href="/courses" asChild>
@@ -25,6 +26,6 @@ export default function HomeBlock({
           <Text className="text-center text-white font-bold">Browse Courses</Text>
         </TouchableOpacity>
       </Link>
-    </View>
+    </Animated.View>
   );
 }

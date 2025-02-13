@@ -1,16 +1,17 @@
 import { useStrapi } from '@/providers/StrapiProvider';
-import { Ionicons } from '@expo/vector-icons';
 import { useQuery } from '@tanstack/react-query';
 import { Link } from 'expo-router';
 import { View, Text, TouchableOpacity } from 'react-native';
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
-
+import Animated, { FadeIn } from 'react-native-reanimated';
+import CourseCard from '@/components/CourseCard';
 export default function HomeScreen() {
   const { getUserCourses } = useStrapi();
   const { data, isLoading } = useQuery({
     queryKey: ['userCourses'],
     queryFn: () => getUserCourses(),
   });
+  console.log('🚀 ~ data:', data);
 
   return (
     <View className="flex-1">
@@ -27,6 +28,17 @@ export default function HomeScreen() {
           </Link>
         </View>
       )}
+      <Animated.FlatList
+        data={data}
+        renderItem={({ item, index }) => (
+          <Animated.View entering={FadeIn.delay(index * 400).duration(800)}>
+            <CourseCard {...item} openLesson={'1'} />
+          </Animated.View>
+        )}
+        contentContainerClassName="pt-4 px-4"
+        keyExtractor={(item) => item.id.toString()}
+        showsVerticalScrollIndicator={false}
+      />
     </View>
   );
 }

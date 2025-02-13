@@ -12,6 +12,7 @@ import { tokenCache } from '@/utils/cache';
 const publishableKey = process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY!;
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { useReactQueryDevTools } from '@dev-plugins/react-query';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 if (!publishableKey) {
   throw new Error(
@@ -30,6 +31,11 @@ const queryClient = new QueryClient({
     },
   },
 });
+
+export const unstable_settings = {
+  // Ensure any route can link back to `/`
+  initialRouteName: 'index',
+};
 
 const InitialLayout = () => {
   const [loaded] = useFonts({
@@ -50,15 +56,15 @@ const InitialLayout = () => {
     console.log('🚀 ~ useEffect ~ isSignedIn:', isSignedIn);
     if (!loaded) return;
     const inAuthGroup = segments[1] === '(authenticated)';
-    console.log('🚀 ~ useEffect ~ inAuthGroup:', inAuthGroup);
 
     if (isSignedIn && !inAuthGroup) {
       console.log('AUTOMATICALLY REDIRECTING TO AUTH GROUP');
-      router.replace('/(authenticated)/(tabs)');
-    } else {
-      console.log('NOT AUTOMATICALLY REDIRECTING TO AUTH GROUP');
-      // router.replace('/');
+      router.replace('/(app)/(authenticated)/(tabs)');
     }
+    // else {
+    //   console.log('NOT AUTOMATICALLY REDIRECTING TO AUTH GROUP');
+    //   // router.replace('/');
+    // }
   }, [isLoaded, isSignedIn, loaded]);
 
   return (
@@ -74,15 +80,17 @@ const RootLayout = () => {
 
   return (
     <ClerkProvider tokenCache={tokenCache} publishableKey={publishableKey}>
-      <ClerkLoaded>
-        <QueryClientProvider client={queryClient}>
-          <StrapiProvider>
-            <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-              <InitialLayout />
-            </ThemeProvider>
-          </StrapiProvider>
-        </QueryClientProvider>
-      </ClerkLoaded>
+      <GestureHandlerRootView style={{ flex: 1 }}>
+        <ClerkLoaded>
+          <QueryClientProvider client={queryClient}>
+            <StrapiProvider>
+              <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+                <InitialLayout />
+              </ThemeProvider>
+            </StrapiProvider>
+          </QueryClientProvider>
+        </ClerkLoaded>
+      </GestureHandlerRootView>
     </ClerkProvider>
   );
 };

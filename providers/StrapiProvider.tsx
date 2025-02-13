@@ -1,13 +1,16 @@
 import { Course, Lesson, HomeInfo, StrapiUser } from '@/types/interfaces';
-import { createContext, useContext, ReactNode } from 'react';
+import { createContext, useContext, ReactNode, useEffect, useState } from 'react';
+import { useUser } from '@clerk/clerk-expo';
 
 // Define the context type
 interface StrapiContextType {
   createUser: (user: StrapiUser) => Promise<StrapiUser>;
   getHomeInfo: () => Promise<HomeInfo>;
   getCourses: () => Promise<Course[]>;
-  getLessonsForCourse: (courseId: string) => Promise<Lesson[]>;
+  getCourse: (slug: string) => Promise<Course>;
+  getLessonsForCourse: (slug: string) => Promise<Lesson[]>;
   getUserCourses: () => Promise<Course[]>;
+  addUserToCourse: (courseId: string) => Promise<void>;
 }
 
 // Create the context
@@ -15,6 +18,42 @@ const StrapiContext = createContext<StrapiContextType | undefined>(undefined);
 
 export function StrapiProvider({ children }: { children: ReactNode }) {
   const baseUrl = process.env.EXPO_PUBLIC_STRAPI_API_URL as string;
+  const { user } = useUser();
+  const [activeStrapiUserId, setActiveStrapiUserId] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (user) {
+      getActiveStrapiUserIdForClerkId(user.id).then((result) => {
+        console.log(' result:', result);
+        // Strapi 5: use documentId
+        setActiveStrapiUserId(result.id);
+      });
+    } else {
+      console.log('No user');
+      setActiveStrapiUserId(null);
+    }
+  }, [user]);
+
+  const getActiveStrapiUserIdForClerkId = async (clerkId: string) => {
+    try {
+      console.log('GET ACTIVE USER');
+
+      const response = await fetch(
+        `${baseUrl}/api/users?filters[clerkId][$eq]=${clerkId}&populate=courses`
+      );
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const result = await response.json();
+      console.log('🚀 ~ getActiveStrapiUserIdForClerkId ~ result:', result);
+      return result[0];
+    } catch (error) {
+      console.error('Error creating user:', error);
+      throw error;
+    }
+  };
 
   const createUser = async (user: StrapiUser): Promise<StrapiUser> => {
     try {
@@ -40,13 +79,18 @@ export function StrapiProvider({ children }: { children: ReactNode }) {
 
   const getCourses = async (): Promise<Course[]> => {
     try {
-      const response = await fetch(`${baseUrl}/api/courses?populate=*`);
+      const response = await fetch(`${baseUrl}/api/courses?populate=image`);
 
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
 
       const result = await response.json();
+      result.data = result.data.map((item: any) => ({
+        ...item,
+        image: `${baseUrl}${item.image.url}`,
+      }));
+
       return result.data;
     } catch (error) {
       console.error('Error fetching data from Strapi:', error);
@@ -54,16 +98,38 @@ export function StrapiProvider({ children }: { children: ReactNode }) {
     }
   };
 
-  const getLessonsForCourse = async (courseId: string): Promise<Lesson[]> => {
+  const getCourse = async (slug: string): Promise<Course> => {
     try {
-      const response = await fetch(`${baseUrl}/api/lessons?filters[course][id][$eq]=${courseId}`);
+      const response = await fetch(`${baseUrl}/api/courses?filters[slug][$eq]=${slug}&populate=*`);
 
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
 
       const result = await response.json();
-      console.log('🚀 ~ getLessonsForCourse ~ result:', result);
+      result.data[0] = {
+        ...result.data[0],
+        image: `${baseUrl}${result.data[0].image.url}`,
+      };
+      return result.data[0];
+    } catch (error) {
+      console.error('Error fetching course:', error);
+      throw error;
+    }
+  };
+
+  const getLessonsForCourse = async (slug: string): Promise<Lesson[]> => {
+    try {
+      const response = await fetch(
+        `${baseUrl}/api/lessons?filters[course][slug][$eq]=${slug}&sort=lesson_index`
+      );
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const result = await response.json();
+
       return result.data;
     } catch (error) {
       console.error('Error fetching lessons for course:', error);
@@ -84,7 +150,6 @@ export function StrapiProvider({ children }: { children: ReactNode }) {
         ...result.data,
         image: `${baseUrl}${result.data.image.url}`,
       };
-      console.log('🚀 ~ getHomeInfo ~ result:', result.data);
       return result.data;
     } catch (error) {
       console.error('Error fetching home info:', error);
@@ -92,16 +157,45 @@ export function StrapiProvider({ children }: { children: ReactNode }) {
     }
   };
 
+  const addUserToCourse = async (courseId: string): Promise<void> => {
+    try {
+      const response = await fetch(`${baseUrl}/api/users/${activeStrapiUserId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ courses: [{ id: courseId }] }),
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const result = await response.json();
+      console.log('🚀 ~ addUserToCourse ~ result:', result);
+      return result;
+    } catch (error) {
+      console.error('Error adding user course:', error);
+      throw error;
+    }
+  };
+
   const getUserCourses = async (): Promise<Course[]> => {
     try {
-      const response = await fetch(`${baseUrl}/api/user-courses`);
+      console.log('GET USER COURSES: ', activeStrapiUserId);
+      const url = `${baseUrl}/api/users/${activeStrapiUserId}?populate[courses][populate]=image`;
+      console.log('🚀 ~ getUserCourses ~ url:', url);
+      const response = await fetch(encodeURI(url));
 
-      // if (!response.ok) {
-      //   throw new Error(`HTTP error! status: ${response.status}`);
-      // }
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
 
       const result = await response.json();
-      return [];
+      result.courses.forEach((course: any) => {
+        course.image = `${baseUrl}${course.image.url}`;
+      });
+      console.log('🚀 ~ getUserCourses ~ result:', result);
+      return result.courses;
     } catch (error) {
       console.error('Error fetching user courses:', error);
       throw error;
@@ -114,6 +208,8 @@ export function StrapiProvider({ children }: { children: ReactNode }) {
     getLessonsForCourse,
     getHomeInfo,
     getUserCourses,
+    addUserToCourse,
+    getCourse,
   };
 
   return <StrapiContext.Provider value={value}>{children}</StrapiContext.Provider>;

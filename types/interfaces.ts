@@ -2,11 +2,14 @@ import { BlocksContent } from '@strapi/blocks-react-renderer';
 
 export interface Course {
   id: number;
+  documentId: string;
   title: string;
   description: any;
   publishedAt: string;
   image: string;
   slug: string;
+  isPremium: boolean;
+  lessons: Lesson[];
 }
 
 export interface Lesson {
@@ -15,6 +18,7 @@ export interface Lesson {
   description: any;
   publishedAt: string;
   course: Course;
+  lesson_index: number;
 }
 
 export interface HomeInfo {
