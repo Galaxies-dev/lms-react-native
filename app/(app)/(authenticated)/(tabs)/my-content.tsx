@@ -12,7 +12,6 @@ export default function HomeScreen() {
     queryKey: ['userCourses'],
     queryFn: () => getUserCourses(),
   });
-  console.log('🚀 ~ data:', data);
 
   return (
     <View className="flex-1">

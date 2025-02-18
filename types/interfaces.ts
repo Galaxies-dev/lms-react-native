@@ -24,10 +24,13 @@ export interface UserCourses {
 export interface Lesson {
   id: number;
   name: string;
-  description: any;
+  notes: any;
   publishedAt: string;
   course: Course;
   lesson_index: number;
+  video: string;
+  documentId: string;
+  completed: boolean;
 }
 
 export interface HomeInfo {
