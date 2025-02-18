@@ -8,7 +8,7 @@ import CourseCard from '@/components/CourseCard';
 
 export default function HomeScreen() {
   const { getUserCourses } = useStrapi();
-  const { data, isLoading } = useQuery({
+  const { data } = useQuery({
     queryKey: ['userCourses'],
     queryFn: () => getUserCourses(),
   });
@@ -33,7 +33,7 @@ export default function HomeScreen() {
         data={data}
         renderItem={({ item, index }) => (
           <Animated.View entering={FadeIn.delay(index * 400).duration(800)}>
-            <CourseCard {...item.course} openLesson={item.last_lesson || '1'} />
+            <CourseCard {...item.course} openLesson={item.last_lesson || 'overview/overview'} />
           </Animated.View>
         )}
         contentContainerClassName="pt-4 px-4"

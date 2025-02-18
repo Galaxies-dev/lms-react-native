@@ -9,12 +9,9 @@ const Layout = () => {
 
   // Protect the inside area
   if (!isSignedIn && inAuthGroup) {
-    console.log('Redirecting to home');
     router.replace('/');
     // return <Redirect href="/" />;
   }
-
-  console.log('isSignedIn simon', isSignedIn);
 
   return <Slot />;
 };

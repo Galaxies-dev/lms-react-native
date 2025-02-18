@@ -53,12 +53,10 @@ const InitialLayout = () => {
   }, [loaded]);
 
   useEffect(() => {
-    console.log('🚀 ~ useEffect ~ isSignedIn:', isSignedIn);
     if (!loaded) return;
     const inAuthGroup = segments[1] === '(authenticated)';
 
     if (isSignedIn && !inAuthGroup) {
-      console.log('AUTOMATICALLY REDIRECTING TO AUTH GROUP');
       router.replace('/(app)/(authenticated)/(tabs)');
     }
     // else {
