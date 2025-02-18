@@ -20,6 +20,7 @@ interface StrapiContextType {
     progress: number,
     nextLessonIndex?: number
   ) => Promise<void>;
+  getUserCompletedLessons: () => Promise<number>;
 }
 
 // Create the context
@@ -175,7 +176,7 @@ export function StrapiProvider({ children }: { children: ReactNode }) {
   const getUserCompletedLessonsForCourse = async (slug: string): Promise<Lesson[]> => {
     try {
       const response = await fetch(
-        `${baseUrl}/api/progresses?filters[course][slug][$eq]=${slug}&populate=lesson`
+        `${baseUrl}/api/progresses?filters[course][slug][$eq]=${slug}&filters[clerkId][$eq]=${user?.id}&populate=lesson`
       );
 
       if (!response.ok) {
@@ -329,6 +330,31 @@ export function StrapiProvider({ children }: { children: ReactNode }) {
     }
   };
 
+  const getUserCompletedLessons = async (): Promise<number> => {
+    try {
+      const response = await fetch(
+        `${baseUrl}/api/progresses?filters[clerkId]=${user?.id}&populate=lesson`,
+        {
+          method: 'GET',
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const data = await response.json();
+      console.log('🚀 ~ getUserCompletedLessons ~ data:', data);
+      // Filter out duplicate lessons by documentId
+      const lessonIds = data.data.map((item: any) => item.lesson.documentId);
+      console.log('🚀 ~ getUserCompletedLessons ~ lessonIds:', lessonIds);
+      const uniqueLessonIds = [...new Set(lessonIds)];
+      console.log('🚀 ~ getUserCompletedLessons ~ uniqueLessonIds:', uniqueLessonIds);
+      return uniqueLessonIds.length;
+    } catch (error) {
+      throw error;
+    }
+  };
+
   const value = {
     createUser,
     getCourses,
@@ -340,6 +366,7 @@ export function StrapiProvider({ children }: { children: ReactNode }) {
     getCourse,
     userHasCourse,
     markLessonAsCompleted,
+    getUserCompletedLessons,
   };
 
   return <StrapiContext.Provider value={value}>{children}</StrapiContext.Provider>;

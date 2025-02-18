@@ -1,8 +1,7 @@
-import { View, Text, Image, TouchableOpacity } from 'react-native';
+import { View, Text } from 'react-native';
 import { useQuery } from '@tanstack/react-query';
 import { useStrapi } from '@/providers/StrapiProvider';
 import HomeBlock from '@/components/HomeBlock';
-import '@/global.css';
 import { Stack } from 'expo-router';
 
 export default function HomeScreen() {

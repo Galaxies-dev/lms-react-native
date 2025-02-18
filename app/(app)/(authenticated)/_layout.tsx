@@ -6,6 +6,7 @@ import { Ionicons } from '@expo/vector-icons';
 const Layout = () => {
   const colorScheme = useColorScheme();
   const router = useRouter();
+
   return (
     <Stack
       screenOptions={{

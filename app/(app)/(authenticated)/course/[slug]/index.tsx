@@ -17,6 +17,8 @@ import Animated, {
   interpolate,
 } from 'react-native-reanimated';
 import { useState } from 'react';
+import { useRevenueCat } from '@/providers/RevenueCatProvider';
+import { PurchasesPackage } from 'react-native-purchases';
 const HEADER_HEIGHT = 200; // Increased height for better parallax effect
 const HEADER_SCALE = 1.8; // Maximum scale for the parallax effect
 
@@ -26,6 +28,7 @@ const Page = () => {
   const { width: windowWidth } = useWindowDimensions();
   const scrollY = useSharedValue(0);
   const [hasCourse, setHasCourse] = useState(false);
+  const { user, packages, purchasePackage } = useRevenueCat();
 
   const { data: course, isLoading } = useQuery({
     queryKey: ['course', slug],
@@ -71,8 +74,8 @@ const Page = () => {
       </View>
     );
   } else {
+    // Check if user has course access already
     userHasCourse(course.documentId.toString()).then((result) => {
-      console.log('🚀 ~ onSuccess: ~ result:', result);
       setHasCourse(result);
     });
   }
@@ -81,14 +84,16 @@ const Page = () => {
     if (hasCourse) {
       router.replace(`/(app)/(authenticated)/course/${slug}/overview/overview`);
     } else {
-      console.log('start course: ', course);
       const result = await addUserToCourse(course.documentId.toString());
-      console.log('🚀 ~ onStartCourse ~ result:', result);
       if (result) {
-        console.log('REPLACE VIEW');
         router.replace('/my-content');
       }
     }
+  };
+
+  const onPurchase = (pack: PurchasesPackage) => {
+    // Purchase the package
+    purchasePackage!(pack);
   };
 
   return (

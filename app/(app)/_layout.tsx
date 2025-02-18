@@ -1,19 +1,21 @@
-import { Redirect, Slot, useRouter, useSegments } from 'expo-router';
+import { Redirect, Slot, useSegments } from 'expo-router';
 import { useAuth } from '@clerk/clerk-expo';
-
+import { RevenueCatProvider } from '@/providers/RevenueCatProvider';
 const Layout = () => {
   const { isSignedIn } = useAuth();
   const segments = useSegments();
   const inAuthGroup = segments[1] === '(authenticated)';
-  const router = useRouter();
 
   // Protect the inside area
   if (!isSignedIn && inAuthGroup) {
-    router.replace('/');
-    // return <Redirect href="/" />;
+    return <Redirect href="/login" />;
   }
 
-  return <Slot />;
+  return (
+    <RevenueCatProvider>
+      <Slot />
+    </RevenueCatProvider>
+  );
 };
 
 export default Layout;

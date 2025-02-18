@@ -1,16 +1,19 @@
 {
   "expo": {
     "name": "Strapi LMS",
-    "slug": "strapi-lms",
+    "slug": "lms",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "myapp",
+    "scheme": "lms",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.galaxies.lms"
+      "bundleIdentifier": "com.galaxies.lms",
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
+      }
     },
     "android": {
       "adaptiveIcon": {

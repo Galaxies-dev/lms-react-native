@@ -3,10 +3,11 @@ import { useFonts } from 'expo-font';
 import { Stack, useRouter, useSegments } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
-import { LogBox, useColorScheme } from 'react-native';
+import { ActivityIndicator, LogBox, useColorScheme } from 'react-native';
 import 'react-native-reanimated';
-import { StrapiProvider } from '../providers/StrapiProvider';
 import '@/global.css';
+
+import { StrapiProvider } from '../providers/StrapiProvider';
 import { ClerkProvider, ClerkLoaded, useAuth } from '@clerk/clerk-expo';
 import { tokenCache } from '@/utils/cache';
 const publishableKey = process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY!;
@@ -27,7 +28,7 @@ SplashScreen.preventAutoHideAsync();
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      staleTime: 60 * 1000, // 1 minute
+      staleTime: 60 * 60 * 1000,
     },
   },
 });
@@ -47,27 +48,28 @@ const InitialLayout = () => {
   useReactQueryDevTools(queryClient);
 
   useEffect(() => {
-    if (loaded) {
+    if (loaded && isLoaded) {
       SplashScreen.hideAsync();
     }
-  }, [loaded]);
+  }, [loaded, isLoaded]);
 
   useEffect(() => {
     if (!loaded) return;
+
     const inAuthGroup = segments[1] === '(authenticated)';
 
     if (isSignedIn && !inAuthGroup) {
       router.replace('/(app)/(authenticated)/(tabs)');
     }
-    // else {
-    //   console.log('NOT AUTOMATICALLY REDIRECTING TO AUTH GROUP');
-    //   // router.replace('/');
-    // }
   }, [isLoaded, isSignedIn, loaded]);
+
+  if (!isLoaded || !loaded) {
+    return <ActivityIndicator />;
+  }
 
   return (
     <Stack>
-      <Stack.Screen name="index" options={{ headerShown: false }} />
+      <Stack.Screen name="login" options={{ headerShown: false }} />
       <Stack.Screen name="(app)" options={{ headerShown: false }} />
     </Stack>
   );

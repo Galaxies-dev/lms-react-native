@@ -13,8 +13,6 @@ export default function HomeScreen() {
     queryFn: () => getUserCourses(),
   });
 
-  console.log('🚀 ~ HomeScreen ~ data:', data);
-
   return (
     <View className="flex-1">
       {data?.length === 0 && (

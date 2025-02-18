@@ -1,6 +1,6 @@
 import { View, Text, Image, Pressable } from 'react-native';
 import { Link } from 'expo-router';
-import { Course } from '../types/interfaces';
+import { Course } from '@/types/interfaces';
 
 type CourseCardProps = Course & { openLesson?: string; finished_percentage?: number };
 
