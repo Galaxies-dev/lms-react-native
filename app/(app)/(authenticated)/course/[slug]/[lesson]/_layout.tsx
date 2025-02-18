@@ -19,6 +19,7 @@ function CustomDrawerContent(props: any) {
   const [lessons, setLessons] = useState<Lesson[]>([]);
   const { slug } = useLocalSearchParams();
   const pathname = usePathname();
+  console.log("🚀 ~ CustomDrawerContent ~ pathname:", pathname)
 
   useEffect(() => {
     getLessonsForCourse(slug as string).then((lessons) => {

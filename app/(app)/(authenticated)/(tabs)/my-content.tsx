@@ -5,6 +5,7 @@ import { View, Text, TouchableOpacity } from 'react-native';
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
 import Animated, { FadeIn } from 'react-native-reanimated';
 import CourseCard from '@/components/CourseCard';
+
 export default function HomeScreen() {
   const { getUserCourses } = useStrapi();
   const { data, isLoading } = useQuery({
@@ -32,7 +33,7 @@ export default function HomeScreen() {
         data={data}
         renderItem={({ item, index }) => (
           <Animated.View entering={FadeIn.delay(index * 400).duration(800)}>
-            <CourseCard {...item} openLesson={'1'} />
+            <CourseCard {...item.course} openLesson={item.last_lesson || '1'} />
           </Animated.View>
         )}
         contentContainerClassName="pt-4 px-4"

@@ -1,8 +1,6 @@
 import {
   View,
   Text,
-  Image,
-  ScrollView,
   Pressable,
   ActivityIndicator,
   Platform,
@@ -18,15 +16,16 @@ import Animated, {
   useSharedValue,
   interpolate,
 } from 'react-native-reanimated';
-
+import { useState } from 'react';
 const HEADER_HEIGHT = 200; // Increased height for better parallax effect
 const HEADER_SCALE = 1.8; // Maximum scale for the parallax effect
 
 const Page = () => {
   const { slug } = useLocalSearchParams<{ slug: string }>();
-  const { getCourse, addUserToCourse } = useStrapi();
+  const { getCourse, addUserToCourse, userHasCourse } = useStrapi();
   const { width: windowWidth } = useWindowDimensions();
   const scrollY = useSharedValue(0);
+  const [hasCourse, setHasCourse] = useState(false);
 
   const { data: course, isLoading } = useQuery({
     queryKey: ['course', slug],
@@ -71,17 +70,25 @@ const Page = () => {
         <Text>Course not found</Text>
       </View>
     );
+  } else {
+    userHasCourse(course.documentId.toString()).then((result) => {
+      console.log('🚀 ~ onSuccess: ~ result:', result);
+      setHasCourse(result);
+    });
   }
 
   const onStartCourse = async () => {
-    console.log('start course: ', course);
-    // TODO: FIX
-    // const result = await addUserToCourse(course.documentId.toString());
-    // console.log('🚀 ~ onStartCourse ~ result:', result);
-    router.replace('/my-content');
-    // if (result.status === 'success') {
-    //   router.replace(`/course/${slug}`);
-    // }
+    if (hasCourse) {
+      router.replace(`/(app)/(authenticated)/course/${slug}/overview/overview`);
+    } else {
+      console.log('start course: ', course);
+      const result = await addUserToCourse(course.documentId.toString());
+      console.log('🚀 ~ onStartCourse ~ result:', result);
+      if (result) {
+        console.log('REPLACE VIEW');
+        router.replace('/my-content');
+      }
+    }
   };
 
   return (
@@ -111,7 +118,9 @@ const Page = () => {
         <Pressable
           onPress={onStartCourse}
           className="mt-4 bg-blue-500 rounded-lg py-3 items-center">
-          <Text className="text-white font-semibold text-lg">Start Course</Text>
+          <Text className="text-white font-semibold text-lg">
+            {hasCourse ? 'Continue Course' : 'Start Course'}
+          </Text>
         </Pressable>
 
         {Platform.OS === 'web' && (

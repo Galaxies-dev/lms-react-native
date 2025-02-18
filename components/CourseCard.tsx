@@ -1,17 +1,13 @@
 import { View, Text, Image, Pressable } from 'react-native';
 import { Link } from 'expo-router';
 import { Course } from '../types/interfaces';
-import { useEffect } from 'react';
 
 type CourseCardProps = Course & { openLesson?: string };
 
 export default function CourseCard({
-  id,
   title,
-  description,
   image,
   slug,
-  publishedAt,
   isPremium,
   openLesson,
 }: CourseCardProps) {

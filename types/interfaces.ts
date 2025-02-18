@@ -12,6 +12,15 @@ export interface Course {
   lessons: Lesson[];
 }
 
+export interface UserCourses {
+  id: number;
+  documentId: string;
+  course: Course;
+  finished_percentage: number;
+  clerkId: string;
+  last_lesson?: string;
+}
+
 export interface Lesson {
   id: number;
   name: string;
