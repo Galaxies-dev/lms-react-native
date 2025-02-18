@@ -13,6 +13,8 @@ export default function HomeScreen() {
     queryFn: () => getUserCourses(),
   });
 
+  console.log('🚀 ~ HomeScreen ~ data:', data);
+
   return (
     <View className="flex-1">
       {data?.length === 0 && (
@@ -32,7 +34,11 @@ export default function HomeScreen() {
         data={data}
         renderItem={({ item, index }) => (
           <Animated.View entering={FadeIn.delay(index * 400).duration(800)}>
-            <CourseCard {...item.course} openLesson={item.last_lesson || 'overview/overview'} />
+            <CourseCard
+              {...item.course}
+              finished_percentage={item.finished_percentage}
+              openLesson={item.next_lesson_index || 'overview/overview'}
+            />
           </Animated.View>
         )}
         contentContainerClassName="pt-4 px-4"

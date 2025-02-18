@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "lms",
-    "slug": "lms",
+    "name": "Strapi LMS",
+    "slug": "strapi-lms",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
@@ -10,7 +10,7 @@
     "newArchEnabled": true,
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.supersimon.lms"
+      "bundleIdentifier": "com.galaxies.lms"
     },
     "android": {
       "adaptiveIcon": {
@@ -45,6 +45,15 @@
     ],
     "experiments": {
       "typedRoutes": true
-    }
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "d3c5b076-4c53-4501-8cca-f58b12f3d901"
+      }
+    },
+    "owner": "supersimon"
   }
 }

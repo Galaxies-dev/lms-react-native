@@ -14,7 +14,12 @@ interface StrapiContextType {
   getUserCourses: () => Promise<UserCourses[]>;
   addUserToCourse: (courseId: string) => Promise<UserCourses>;
   userHasCourse: (courseId: string) => Promise<boolean>;
-  markLessonAsCompleted: (lessonId: string, courseId: string) => Promise<void>;
+  markLessonAsCompleted: (
+    lessonId: string,
+    courseId: string,
+    progress: number,
+    nextLessonIndex?: number
+  ) => Promise<void>;
 }
 
 // Create the context
@@ -103,6 +108,7 @@ export function StrapiProvider({ children }: { children: ReactNode }) {
   };
 
   const getCourse = async (slug: string): Promise<Course> => {
+    console.log('🚀 ~ getCourse ~ slug:', slug);
     try {
       const response = await fetch(`${baseUrl}/api/courses?filters[slug][$eq]=${slug}&populate=*`);
 
@@ -111,6 +117,7 @@ export function StrapiProvider({ children }: { children: ReactNode }) {
       }
 
       const result = await response.json();
+      console.log('🚀 ~ getCourse ~ result:', result);
       result.data[0] = {
         ...result.data[0],
         image: `${baseUrl}${result.data[0].image.url}`,
@@ -167,7 +174,9 @@ export function StrapiProvider({ children }: { children: ReactNode }) {
 
   const getUserCompletedLessonsForCourse = async (slug: string): Promise<Lesson[]> => {
     try {
-      const response = await fetch(`${baseUrl}/api/progresses?filters[course][slug][$eq]=${slug}&populate=lesson`);
+      const response = await fetch(
+        `${baseUrl}/api/progresses?filters[course][slug][$eq]=${slug}&populate=lesson`
+      );
 
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
@@ -179,7 +188,7 @@ export function StrapiProvider({ children }: { children: ReactNode }) {
       console.error('Error fetching user completed lessons for course:', error);
       throw error;
     }
-  }
+  };
 
   const getHomeInfo = async (): Promise<HomeInfo> => {
     try {
@@ -238,7 +247,7 @@ export function StrapiProvider({ children }: { children: ReactNode }) {
       }
 
       const result = await response.json();
-      result.data.forEach((entry: any) => {        
+      result.data.forEach((entry: any) => {
         entry.course.image = `${baseUrl}${entry.course.image.url}`;
       });
       return result.data;
@@ -252,18 +261,60 @@ export function StrapiProvider({ children }: { children: ReactNode }) {
     return userCourses.some((course) => course.course.documentId === courseId);
   };
 
-  const markLessonAsCompleted = async (lessonId: string, courseId: string) => {
+  const markLessonAsCompleted = async (
+    lessonId: string,
+    courseId: string,
+    progress: number,
+    nextLessonIndex?: number
+  ) => {
     try {
       const response = await fetch(`${baseUrl}/api/progresses`, {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json', 
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify({
           data: {
             lesson: lessonId,
             course: courseId,
             clerkId: user?.id,
+          },
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      // Also update user-course with progress and lesson_index
+      const userCourse = await getUserCourses();
+      const userCourseToUpdate = userCourse.find((course) => course.course.documentId === courseId);
+      console.log('🚀 ~ markLessonAsCompleted ~ userCourseToUpdate:', userCourseToUpdate);
+      if (userCourseToUpdate) {
+        updateUserCourseProgress(userCourseToUpdate.documentId, progress, nextLessonIndex);
+      }
+
+      return response.json();
+    } catch (error) {
+      throw error;
+    }
+  };
+
+  const updateUserCourseProgress = async (
+    courseId: string,
+    progress: number,
+    nextLessonIndex?: number
+  ) => {
+    try {
+      const response = await fetch(`${baseUrl}/api/user-courses/${courseId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          data: {
+            finished_percentage: progress,
+            next_lesson_index: `${nextLessonIndex}`,
           },
         }),
       });

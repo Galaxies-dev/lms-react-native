@@ -9,7 +9,6 @@ import Animated, { FadeIn, Easing } from 'react-native-reanimated';
 
 export default function HomeBlock({
   homeInfo,
-  dom,
 }: {
   homeInfo: HomeInfo;
   dom: import('expo/dom').DOMProps;
@@ -17,7 +16,7 @@ export default function HomeBlock({
   const blockContent = homeInfo?.content;
 
   return (
-    <Animated.View className=" w-full" entering={FadeIn.duration(300).easing(Easing.ease)}>
+    <Animated.View className=" w-full" entering={FadeIn.duration(200).easing(Easing.ease)}>
       <Image source={{ uri: homeInfo?.image }} className="w-full h-40" />
       <View className="p-4">{blockContent && <BlocksRenderer content={blockContent} />}</View>
       <Link href="/courses" asChild>

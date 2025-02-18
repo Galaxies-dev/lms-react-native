@@ -1,24 +1,15 @@
 import { Drawer } from 'expo-router/drawer';
-import {
-  DrawerContentScrollView,
-  DrawerContent,
-  DrawerItemList,
-  DrawerItem,
-  useDrawerStatus,
-} from '@react-navigation/drawer';
+import { DrawerContentScrollView, DrawerItemList, DrawerItem } from '@react-navigation/drawer';
 import { router, usePathname } from 'expo-router';
-import {  Image, View, Text, TouchableOpacity } from 'react-native';
-import { useEffect, useState } from 'react';
+import { Image, View, Text, TouchableOpacity } from 'react-native';
 import { useStrapi } from '@/providers/StrapiProvider';
 import { useLocalSearchParams } from 'expo-router';
-import { Lesson } from '@/types/interfaces';
 import { Ionicons } from '@expo/vector-icons';
 import Entypo from '@expo/vector-icons/Entypo';
 import { useQuery } from '@tanstack/react-query';
 
 function CustomDrawerContent(props: any) {
   const { getLessonsForCourse } = useStrapi();
-  // const [lessons, setLessons] = useState<Lesson[]>([]);
   const { slug } = useLocalSearchParams();
   const pathname = usePathname();
 
@@ -27,23 +18,15 @@ function CustomDrawerContent(props: any) {
     queryFn: () => getLessonsForCourse(slug as string),
   });
 
-      // useEffect(() => {
-      //   getLessonsForCourse(slug as string).then((lessons) => {
-      //     setLessons(lessons);
-      //   });
-      // }, [slug]);
-
-      if (!lessons) {
-        return <Text>Loading...</Text>;
-      }
-
-  console.log('lessons: ', lessons);
+  if (!lessons) {
+    return <Text>Loading...</Text>;
+  }
 
   return (
     <View className="flex-1 py-safe">
       <Image
-        source={  require('@/assets/images/yoga.png') }
-        style={{ width: 200, height: 100, alignSelf: 'center', }}
+        source={require('@/assets/images/yoga.png')}
+        style={{ width: 200, height: 100, alignSelf: 'center' }}
         resizeMode="contain"
       />
       <DrawerContentScrollView {...props}>
@@ -57,13 +40,13 @@ function CustomDrawerContent(props: any) {
               label={lesson.name}
               onPress={() => router.push(`/course/${slug}/${lesson.lesson_index}`)}
               focused={isActive}
-              icon={({ color, size }) => (
+              icon={({ color, size }) =>
                 lesson.completed ? (
                   <Entypo name="check" size={size} color={color} />
                 ) : (
                   <Entypo name="circle" size={size} color={color} />
                 )
-              )}
+              }
             />
           );
         })}
@@ -87,7 +70,16 @@ const Layout = () => {
     <Drawer
       drawerContent={CustomDrawerContent}
       screenOptions={{ drawerActiveTintColor: '#0d6c9a' }}>
-      <Drawer.Screen name="overview" options={{ headerShown: true, title: 'Course Overview', drawerLabelStyle: { fontSize: 18, color: '#0d6c9a' } }} />
+      <Drawer.Screen
+        name="overview"
+        options={{
+          headerShown: true,
+          title: 'Course Overview',
+          drawerIcon: ({ color, size }) => (
+            <Ionicons name="book-outline" size={size} color={color} />
+          ),
+        }}
+      />
       <Drawer.Screen
         name="index"
         options={{

@@ -1,11 +1,5 @@
-import {
-  View,
-  Text,
-  ActivityIndicator,
-  useWindowDimensions,
-  TouchableOpacity,
-} from 'react-native';
-import { router, useLocalSearchParams } from 'expo-router';
+import { View, Text, ActivityIndicator, useWindowDimensions, TouchableOpacity } from 'react-native';
+import { router, useGlobalSearchParams, useLocalSearchParams } from 'expo-router';
 import { useStrapi } from '@/providers/StrapiProvider';
 import { useQuery } from '@tanstack/react-query';
 import RichtTextContent from '@/components/RichtTextContent';
@@ -20,7 +14,7 @@ const HEADER_HEIGHT = 200;
 const HEADER_SCALE = 1.8;
 
 const Page = () => {
-  const { slug } = useLocalSearchParams<{ slug: string }>();
+  const { slug } = useGlobalSearchParams<{ slug: string }>();
   const { getCourse } = useStrapi();
   const { width: windowWidth } = useWindowDimensions();
   const scrollY = useSharedValue(0);
@@ -28,7 +22,10 @@ const Page = () => {
   const { data: course, isLoading } = useQuery({
     queryKey: ['course', slug],
     queryFn: () => getCourse(slug),
+    enabled: !!slug,
   });
+
+  console.log('🚀 ~ Page ~ course:', course);
 
   const scrollHandler = useAnimatedScrollHandler({
     onScroll: (event) => {
@@ -76,7 +73,7 @@ const Page = () => {
       onScroll={scrollHandler}
       scrollEventThrottle={16}
       showsVerticalScrollIndicator={false}
-      contentContainerStyle={{ flexGrow: 1}}>
+      contentContainerStyle={{ flexGrow: 1 }}>
       <View className="relative" style={{ height: HEADER_HEIGHT }}>
         <Animated.Image
           source={{ uri: course.image }}
@@ -94,19 +91,15 @@ const Page = () => {
 
       {/* Course Info Section */}
       <View className="px-4 pt-4 bg-white dark:bg-black flex-1">
-        <Text className="text-2xl font-bold text-gray-800 dark:text-white">
-          {course.title}
-        </Text>
-        <TouchableOpacity 
+        <Text className="text-2xl font-bold text-gray-800 dark:text-white">{course.title}</Text>
+        <TouchableOpacity
           className="mt-4 bg-primary dark:border-gray-600 rounded-lg py-3"
           onPress={() => router.push(`/course/${course.slug}/1`)}>
-          <Text className="text-center text-white font-medium">
-            Start Course
-          </Text>
+          <Text className="text-center text-white font-medium">Start Course</Text>
         </TouchableOpacity>
         <View className="flex-1 py-4 min-h-[100px]">
-            <RichtTextContent blockContent={course.description} />
-          </View>
+          <RichtTextContent blockContent={course.description} />
+        </View>
       </View>
     </Animated.ScrollView>
   );

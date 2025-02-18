@@ -18,7 +18,7 @@ export interface UserCourses {
   course: Course;
   finished_percentage: number;
   clerkId: string;
-  last_lesson?: string;
+  next_lesson_index?: string;
 }
 
 export interface Lesson {

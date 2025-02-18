@@ -95,7 +95,8 @@ const Page = () => {
     <Animated.ScrollView
       className="flex-1 bg-white dark:bg-black"
       onScroll={scrollHandler}
-      scrollEventThrottle={16}>
+      scrollEventThrottle={16}
+      contentContainerStyle={{ flexGrow: 1 }}>
       <View className="relative" style={{ height: HEADER_HEIGHT }}>
         <Animated.Image
           source={{ uri: course.image }}
@@ -112,7 +113,7 @@ const Page = () => {
       </View>
 
       {/* Course Info Section */}
-      <View className="px-4 pt-4 bg-white dark:bg-black">
+      <View className="flex-1 px-4 pt-4 bg-white dark:bg-black">
         <Text className="text-2xl font-bold text-gray-800 dark:text-white">{course.title}</Text>
 
         <Pressable
@@ -129,7 +130,7 @@ const Page = () => {
           </View>
         )}
         {Platform.OS !== 'web' && (
-          <View className="my-4 h-40 flex-1">
+          <View className="flex-1 my-4 min-h-[200px]">
             <RichtTextContent blockContent={course.description} />
           </View>
         )}
