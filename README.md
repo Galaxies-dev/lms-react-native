@@ -33,6 +33,12 @@ To build the app, perform the following steps:
 3. Run `npx expo prebuild`
 4. Run `npx expo run:ios` or `npx expo run:android`
 
+### API Routes
+
+1. Deploy your project using [EAS Hosting](https://docs.expo.dev/eas/hosting/introduction/)
+2. Update the `app.json` to include your Expo Router **origin**
+3. Upload your local `.env` with `eas env:push --path .env`
+
 
 ## Strapi Setup
 
