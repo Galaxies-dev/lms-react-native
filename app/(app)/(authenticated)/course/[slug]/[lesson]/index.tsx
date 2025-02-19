@@ -44,9 +44,9 @@ const Page = () => {
   player.replace(lesson.video);
 
   // Automatically play the video in production
-  if (!__DEV__) {
-    player.play();
-  }
+  // if (!__DEV__) {
+  //   player.play();
+  // }
 
   const onHandleCompleteLesson = () => {
     const progress = Math.floor((parseInt(lessonIndex) / (lessons?.length || 0)) * 100);

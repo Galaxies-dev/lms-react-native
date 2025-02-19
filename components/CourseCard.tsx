@@ -17,8 +17,6 @@ export default function CourseCard({
   finished_percentage,
   hasCourse = false,
 }: CourseCardProps) {
-  console.log('finished_percentage', finished_percentage);
-
   return (
     <Link href={openLesson ? `/course/${slug}/${openLesson}` : `/course/${slug}`} asChild>
       <Pressable className="mb-4 hover:opacity-80">

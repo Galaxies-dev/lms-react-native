@@ -20,7 +20,7 @@
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.supersimon.lms"
+      "package": "com.galaxies.lms"
     },
     "web": {
       "bundler": "metro",
@@ -31,7 +31,7 @@
       [
         "expo-router",
         {
-          "origin": "https://galaxies.dev"
+          "origin": "https://supersimon-lms--m963a94br9.expo.app"
         }
       ],
       [

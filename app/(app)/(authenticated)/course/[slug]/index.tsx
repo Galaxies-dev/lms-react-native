@@ -83,14 +83,17 @@ const Page = () => {
   }
 
   const onStartCourse = async () => {
+    console.log('🚀 ~ onStartCourse ~ hasCourse:', hasCourse);
     if (hasCourse) {
       router.replace(`/(app)/(authenticated)/course/${slug}/overview/overview`);
     } else {
       if (course.isPremium) {
         const result = await purchasePackage!(productPackage!);
+        console.log('🚀 ~ onStartCourse ~ result:', result);
 
         if (result.productIdentifier === course.revenuecatId) {
           const result = await addUserToCourse(course.documentId.toString());
+          console.log('🚀 ~ onStartCourse ~ result:', result);
           if (result) {
             Alert.alert('Course purchased', 'You can now start the course', [
               {
@@ -148,16 +151,12 @@ const Page = () => {
           </Text>
         </Pressable>
 
-        {Platform.OS === 'web' && (
-          <View className="py-4">
-            <RichtTextContent blockContent={course.description} />
-          </View>
-        )}
-        {Platform.OS !== 'web' && (
-          <View className="flex-1 my-4 min-h-[200px]">
-            <RichtTextContent blockContent={course.description} />
-          </View>
-        )}
+        <View className="my-4">
+          <RichtTextContent
+            blockContent={course.description}
+            dom={{ matchContents: true, scrollEnabled: false }}
+          />
+        </View>
 
         {/* Lessons Section */}
         <Text className="mt-6 mb-2 text-xl font-semibold text-gray-800 dark:text-white">

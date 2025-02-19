@@ -15,7 +15,7 @@ export default function HomeScreen() {
   });
 
   return (
-    <View className="h-full">
+    <View className="h-full flex-1">
       <Stack.Screen options={{ title: data?.title }} />
       {isLoading && (
         <View className="flex-1 items-center justify-center">
@@ -26,6 +26,7 @@ export default function HomeScreen() {
         homeInfo={data!}
         dom={{
           scrollEnabled: false,
+          matchContents: true,
           onLoadEnd: () => {
             setIsLoading(false);
           },

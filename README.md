@@ -1,50 +1,99 @@
-# Welcome to your Expo app 👋
+# React Native LMS with Strapi, Clerk & RevenueCat
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+This is a React Native LMS using a [Strapi](https://strapi.io/) backend for course content, [Clerk](https://go.clerk.com/1vaJMZL) for user authentication and [RevenueCat](https://www.revenuecat.com/docs/getting-started/installation/reactnative?utm_medium=sponsored&utm_source=youtube&utm_campaign=SimonGrimm) for in-app purchases.
 
-## Get started
+Additional features:
 
-1. Install dependencies
+- [Expo Router](https://docs.expo.dev/routing/introduction/) file-based navigation
+- [Expo SQLite](https://docs.expo.dev/versions/latest/sdk/sqlite/) for storing chats and messages
+- [Sentry](https://docs.sentry.io/platforms/react-native/?utm_source=simongrimm&utm_medium=paid-community&utm_campaign=mobile-fy25q3-builders&utm_content=partner-react-native-mobile-trysentry&code=simongrimm) for error tracking
+- [RevenueCat](https://www.revenuecat.com/docs/getting-started/installation/reactnative?utm_medium=sponsored&utm_source=youtube&utm_campaign=SimonGrimm) for subscription management
+- [React Hook Form](https://react-hook-form.com/) for form handling
+- [Calendars](https://github.com/wix/react-native-calendars) for calendar component
+- [Bouncy Checkbox](https://github.com/wix/react-native-bouncy-checkbox) for checkbox component
+- [Haptics](https://docs.expo.dev/versions/latest/sdk/haptics/) for haptic feedback
+- [Reanimated](https://docs.swmansion.com/react-native-reanimated/) 3 for animations
+- [Gesture Handler](https://docs.swmansion.com/react-native-gesture-handler/) for gestures
+- [RN MMKV](https://github.com/mrousavy/react-native-mmkv) for efficient key/value storage
+- [Sonner Native](https://gunnartorfis.github.io/sonner-native/) for toast notifications
 
-   ```bash
-   npm install
-   ```
+## Setup
 
-2. Start the app
+### Environment Setup
 
-   ```bash
-    npx expo start
-   ```
+Make sure you have the [Expo CLI](https://docs.expo.dev/get-started/set-up-your-environment/) installed.
 
-In the output, you'll find options to open the app in a
+Because we are using pre-built and a custom development client, you should download [Android Studio](https://developer.android.com/studio) and [Xcode](https://developer.apple.com/xcode/) to your Mac. For more information on setting up your development environment, refer to the [Expo documentation](https://docs.expo.dev/workflow/android-studio-emulator/) for Android Studio and the [React Native documentation](https://reactnative.dev/docs/environment-setup?guide=native) for Xcode.
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+### App Setup
+To build the app, perform the following steps:
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+1. Clone the repository
+2. Run `npm install`
+3. Run `npx expo prebuild`
+4. Run `npx expo run:ios` or `npx expo run:android`
 
-## Get a fresh project
 
-When you're ready, run:
 
-```bash
-npm run reset-project
-```
+## Sentry Setup
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+1. Create a [Sentry](https://sentry.io/welcome?utm_source=simongrimm&utm_medium=paid-community&utm_campaign=mobile-fy25q3-builders&utm_content=partner-react-native-mobile-learnmore&code=simongrimm) account and project
+2. Go to **Project Settings** and select **Client Keys**
+3. Copy the DSN and add it to the `.env` file
 
-## Learn more
+<img src="./screenshots/dsn.png" width=100%>
 
-To learn more about developing your project with Expo, look at the following resources:
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+## App Screenshots
 
-## Join the community
+<div style="display: flex; flex-direction: 'row';">
+<img src="./screenshots/1.png" width=30%>
+<img src="./screenshots/2.png" width=30%>
+<img src="./screenshots/3.png" width=30%>
+<img src="./screenshots/4.png" width=30%>
+<img src="./screenshots/5.png" width=30%>
+<img src="./screenshots/6.png" width=30%>
+<img src="./screenshots/7.png" width=30%>
+<img src="./screenshots/8.png" width=30%>
+<img src="./screenshots/9.png" width=30%>
+<img src="./screenshots/10.png" width=30%>
+<img src="./screenshots/11.png" width=30%>
+<img src="./screenshots/12.png" width=30%>
+<img src="./screenshots/13.png" width=30%>
+<img src="./screenshots/14.png" width=30%>
+</div>
 
-Join our community of developers creating universal apps.
+## Demo
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+<div style="display: flex; flex-direction: 'row';">
+<img src="./screenshots/1.gif" width=30%>
+<img src="./screenshots/2.gif" width=30%>
+<img src="./screenshots/3.gif" width=30%>
+<img src="./screenshots/8.gif" width=30%>
+
+<img src="./screenshots/5.gif" width=30%>
+<img src="./screenshots/6.gif" width=30%>
+<img src="./screenshots/7.gif" width=30%>
+<img src="./screenshots/4.gif" width=30%>
+
+
+</div>
+
+## Sentry Screenshots
+
+<div style="display: flex; flex-direction: 'row';">
+<img src="./screenshots/sentry1.png" width=100%>
+<img src="./screenshots/sentry2.png" width=100%>
+<img src="./screenshots/sentry3.png" width=100%>
+<img src="./screenshots/sentry4.png" width=100%>
+<img src="./screenshots/sentry.gif" width=100%>
+
+</div>
+
+## 🚀 More
+
+**Take a shortcut from web developer to mobile development fluency with guided learning**
+
+Enjoyed this project? Learn to use React Native to build production-ready, native mobile apps for both iOS and Android based on your existing web development skills.
+
+<a href="https://galaxies.dev"><img src="banner.png" height="auto" width="100%"></a>

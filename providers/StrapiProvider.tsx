@@ -63,7 +63,7 @@ export function StrapiProvider({ children }: { children: ReactNode }) {
       const result = await response.json();
       result.data = result.data.map((item: any) => ({
         ...item,
-        image: `${baseUrl}${item.image.url}`,
+        image: `${item.image.url}`,
       }));
 
       return result.data;
@@ -85,7 +85,7 @@ export function StrapiProvider({ children }: { children: ReactNode }) {
 
       result.data[0] = {
         ...result.data[0],
-        image: `${baseUrl}${result.data[0].image.url}`,
+        image: `${result.data[0].image.url}`,
       };
       return result.data[0];
     } catch (error) {
@@ -129,7 +129,7 @@ export function StrapiProvider({ children }: { children: ReactNode }) {
       }
 
       const result = await response.json();
-      result.data[0].video = `${baseUrl}${result.data[0].video.url}`;
+      result.data[0].video = `${result.data[0].video.url}`;
       return result.data[0];
     } catch (error) {
       console.error('Error fetching lessons for course:', error);
@@ -166,7 +166,7 @@ export function StrapiProvider({ children }: { children: ReactNode }) {
       const result = await response.json();
       result.data = {
         ...result.data,
-        image: `${baseUrl}${result.data.image.url}`,
+        image: `${result.data.image.url}`,
       };
       return result.data;
     } catch (error) {
@@ -194,7 +194,6 @@ export function StrapiProvider({ children }: { children: ReactNode }) {
       }
       queryClient.invalidateQueries({ queryKey: ['userCourses'] });
       const result = await response.json();
-      console.log('🚀 ~ addUserToCourse ~ result:', result);
       return result;
     } catch (error) {
       throw error;
@@ -212,7 +211,7 @@ export function StrapiProvider({ children }: { children: ReactNode }) {
 
       const result = await response.json();
       result.data.forEach((entry: any) => {
-        entry.course.image = `${baseUrl}${entry.course.image.url}`;
+        entry.course.image = `${entry.course.image.url}`;
       });
       return result.data;
     } catch (error) {
