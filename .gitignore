@@ -40,3 +40,4 @@ app-example
 ios/
 android/
 .env
+.env.local

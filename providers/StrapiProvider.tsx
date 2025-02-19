@@ -255,6 +255,7 @@ export function StrapiProvider({ children }: { children: ReactNode }) {
       if (userCourseToUpdate) {
         updateUserCourseProgress(userCourseToUpdate.documentId, progress, nextLessonIndex);
       }
+      queryClient.invalidateQueries({ queryKey: ['userCourses'] });
 
       return response.json();
     } catch (error) {

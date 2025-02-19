@@ -2,20 +2,20 @@
 
 This is a React Native LMS using a [Strapi](https://strapi.io/) backend for course content, [Clerk](https://go.clerk.com/1vaJMZL) for user authentication and [RevenueCat](https://www.revenuecat.com/docs/getting-started/installation/reactnative?utm_medium=sponsored&utm_source=youtube&utm_campaign=SimonGrimm) for in-app purchases.
 
-Additional features:
+Featured Packages:
 
 - [Expo Router](https://docs.expo.dev/routing/introduction/) file-based navigation
-- [Expo SQLite](https://docs.expo.dev/versions/latest/sdk/sqlite/) for storing chats and messages
-- [Sentry](https://docs.sentry.io/platforms/react-native/?utm_source=simongrimm&utm_medium=paid-community&utm_campaign=mobile-fy25q3-builders&utm_content=partner-react-native-mobile-trysentry&code=simongrimm) for error tracking
+- [Expo DOM Components](https://docs.expo.dev/guides/dom-components/) for supporting HTML content
+- [Expo API Routes](https://docs.expo.dev/router/reference/api-routes/) for API calls
+- [NativeWind](https://www.nativewind.dev/) for styling
+- [Strapi](https://strapi.io/) for content management
+- [Clerk](https://go.clerk.com/1vaJMZL) for user authentication
 - [RevenueCat](https://www.revenuecat.com/docs/getting-started/installation/reactnative?utm_medium=sponsored&utm_source=youtube&utm_campaign=SimonGrimm) for subscription management
-- [React Hook Form](https://react-hook-form.com/) for form handling
-- [Calendars](https://github.com/wix/react-native-calendars) for calendar component
-- [Bouncy Checkbox](https://github.com/wix/react-native-bouncy-checkbox) for checkbox component
-- [Haptics](https://docs.expo.dev/versions/latest/sdk/haptics/) for haptic feedback
+- [Blocks Renderer](https://github.com/strapi/blocks-react-renderer) for content blocks
 - [Reanimated](https://docs.swmansion.com/react-native-reanimated/) 3 for animations
-- [Gesture Handler](https://docs.swmansion.com/react-native-gesture-handler/) for gestures
-- [RN MMKV](https://github.com/mrousavy/react-native-mmkv) for efficient key/value storage
-- [Sonner Native](https://gunnartorfis.github.io/sonner-native/) for toast notifications
+- [Expo Video](https://docs.expo.dev/versions/latest/sdk/video/) for video playback
+- [Confetti](https://github.com/AlirezaHadjar/react-native-fast-confetti) for confetti animations
+- [Sonner](https://gunnartorfis.github.io/sonner-native/) for toast notifications
 
 ## Setup
 
@@ -34,59 +34,64 @@ To build the app, perform the following steps:
 4. Run `npx expo run:ios` or `npx expo run:android`
 
 
+## Strapi Setup
 
-## Sentry Setup
+1. Clone the Strapi project from [here](https://github.com/Galaxies-dev/lms-api)
+2. Run the project locally using `npm run start` or deploy using [Strapi Cloud](https://strapi.io/cloud)
+3. Update the `.env` file of the React Native App with the correct Strapi URL and token
 
-1. Create a [Sentry](https://sentry.io/welcome?utm_source=simongrimm&utm_medium=paid-community&utm_campaign=mobile-fy25q3-builders&utm_content=partner-react-native-mobile-learnmore&code=simongrimm) account and project
-2. Go to **Project Settings** and select **Client Keys**
-3. Copy the DSN and add it to the `.env` file
 
-<img src="./screenshots/dsn.png" width=100%>
+
+
+## RevenueCat Setup
+
+1. Setup the RevenueCat project and connect it to your Appstore & Stripe account
+2. Update the `.env` file of the React Native App with the correct RevenueCat API Key
+3. Insert the RevenueCat identifier for your product in the Strapi CMS of a premium course
 
 
 ## App Screenshots
 
 <div style="display: flex; flex-direction: 'row';">
-<img src="./screenshots/1.png" width=30%>
-<img src="./screenshots/2.png" width=30%>
-<img src="./screenshots/3.png" width=30%>
-<img src="./screenshots/4.png" width=30%>
-<img src="./screenshots/5.png" width=30%>
-<img src="./screenshots/6.png" width=30%>
-<img src="./screenshots/7.png" width=30%>
-<img src="./screenshots/8.png" width=30%>
-<img src="./screenshots/9.png" width=30%>
-<img src="./screenshots/10.png" width=30%>
-<img src="./screenshots/11.png" width=30%>
-<img src="./screenshots/12.png" width=30%>
-<img src="./screenshots/13.png" width=30%>
-<img src="./screenshots/14.png" width=30%>
+<img src="./screenshots/app1.png" width=30%>
+<img src="./screenshots/app2.png" width=30%>
+<img src="./screenshots/app3.png" width=30%>
+<img src="./screenshots/app4.png" width=30%>
+<img src="./screenshots/app5.png" width=30%>
+<img src="./screenshots/app6.png" width=30%>
+<img src="./screenshots/app7.png" width=30%>
+
+</div>
+
+## Web Screenshots
+
+<div style="display: flex; flex-direction: 'row';">
+<img src="./screenshots/web1.png" width=30%>
+<img src="./screenshots/web2.png" width=30%>
+<img src="./screenshots/web3.png" width=30%>
+<img src="./screenshots/web4.png" width=30%>
+<img src="./screenshots/web5.png" width=30%>
+<img src="./screenshots/web6.png" width=30%>
+
+
 </div>
 
 ## Demo
 
 <div style="display: flex; flex-direction: 'row';">
-<img src="./screenshots/1.gif" width=30%>
-<img src="./screenshots/2.gif" width=30%>
-<img src="./screenshots/3.gif" width=30%>
-<img src="./screenshots/8.gif" width=30%>
-
-<img src="./screenshots/5.gif" width=30%>
-<img src="./screenshots/6.gif" width=30%>
-<img src="./screenshots/7.gif" width=30%>
-<img src="./screenshots/4.gif" width=30%>
-
+<img src="./screenshots/browse.gif" width=30%>
+<img src="./screenshots/course.gif" width=30%>
 
 </div>
 
-## Sentry Screenshots
+## Strapi Screenshots
 
 <div style="display: flex; flex-direction: 'row';">
-<img src="./screenshots/sentry1.png" width=100%>
-<img src="./screenshots/sentry2.png" width=100%>
-<img src="./screenshots/sentry3.png" width=100%>
-<img src="./screenshots/sentry4.png" width=100%>
-<img src="./screenshots/sentry.gif" width=100%>
+<img src="./screenshots/strapi1.png"  height=30%>
+<img src="./screenshots/strapi2.png"  height=30%>
+<img src="./screenshots/strapi3.png" height=30%>
+<img src="./screenshots/strapi4.png" height=30%>
+<img src="./screenshots/strapi5.png" height=30%>
 
 </div>
 

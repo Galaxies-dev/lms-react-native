@@ -1,9 +1,9 @@
+const TOKEN = process.env.STRAPI_API_ADMIN_TOKEN;
+
 export async function POST(request: Request) {
   try {
     const { courseId, clerkId } = await request.json();
 
-    console.log('🚀 ~ POST ~ clerkId:', clerkId);
-    console.log('🚀 ~ POST ~ courseId:', courseId);
     const body = {
       data: {
         course: courseId,
@@ -15,7 +15,7 @@ export async function POST(request: Request) {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${process.env.STRAPI_API_ADMIN_TOKEN}`,
+        Authorization: `Bearer ${TOKEN}`,
       },
       body: JSON.stringify(body),
     });

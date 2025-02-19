@@ -93,7 +93,7 @@ const Page = () => {
 
         if (result.productIdentifier === course.revenuecatId) {
           const result = await addUserToCourse(course.documentId.toString());
-          console.log('🚀 ~ onStartCourse ~ result:', result);
+          console.log('🚀 ~ ADD ~ result:', result);
           if (result) {
             Alert.alert('Course purchased', 'You can now start the course', [
               {
