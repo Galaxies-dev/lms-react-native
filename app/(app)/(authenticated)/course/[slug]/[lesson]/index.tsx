@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, ActivityIndicator } from 'react-native';
+import { View, Text, TouchableOpacity, ActivityIndicator, Platform } from 'react-native';
 import { useLocalSearchParams, Stack, useRouter } from 'expo-router';
 import { useVideoPlayer, VideoView } from 'expo-video';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
@@ -42,7 +42,11 @@ const Page = () => {
   const hasNextLesson = lessons?.find((l) => l.lesson_index === parseInt(lessonIndex) + 1);
 
   player.replace(lesson.video);
-  // player.play();
+
+  // Automatically play the video in production
+  if (!__DEV__) {
+    player.play();
+  }
 
   const onHandleCompleteLesson = () => {
     const progress = Math.floor((parseInt(lessonIndex) / (lessons?.length || 0)) * 100);
@@ -70,21 +74,23 @@ const Page = () => {
 
   return (
     <View className="flex-1">
-      <Confetti
-        ref={confettiRef}
-        autoplay={false}
-        fallDuration={8000}
-        verticalSpacing={20}
-        fadeOutOnEnd
-      />
+      {Platform.OS !== 'web' && (
+        <Confetti
+          ref={confettiRef}
+          autoplay={false}
+          fallDuration={8000}
+          verticalSpacing={20}
+          fadeOutOnEnd
+        />
+      )}
 
       <Stack.Screen options={{ title: lesson?.name }} />
       <VideoView
         player={player}
         allowsFullscreen
         allowsPictureInPicture
-        style={{ width: '100%', height: 250 }}
-        contentFit="fill"
+        style={{ width: '100%', height: Platform.OS === 'web' ? '40%' : '30%' }}
+        contentFit="contain"
       />
 
       <View className="flex-1 p-4 min-h-[100px]">

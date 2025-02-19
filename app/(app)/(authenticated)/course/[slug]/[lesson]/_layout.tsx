@@ -1,7 +1,7 @@
 import { Drawer } from 'expo-router/drawer';
 import { DrawerContentScrollView, DrawerItemList, DrawerItem } from '@react-navigation/drawer';
 import { router, usePathname } from 'expo-router';
-import { Image, View, Text, TouchableOpacity } from 'react-native';
+import { Image, View, Text, TouchableOpacity, Platform, useWindowDimensions } from 'react-native';
 import { useStrapi } from '@/providers/StrapiProvider';
 import { useLocalSearchParams } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
@@ -66,14 +66,19 @@ function CustomDrawerContent(props: any) {
 }
 
 const Layout = () => {
+  const dimensions = useWindowDimensions();
+
   return (
     <Drawer
       drawerContent={CustomDrawerContent}
-      screenOptions={{ drawerActiveTintColor: '#0d6c9a' }}>
+      screenOptions={{
+        drawerActiveTintColor: '#0d6c9a',
+        drawerType: dimensions.width > 768 ? 'permanent' : 'front',
+        headerShown: Platform.OS === 'web' ? false : true,
+      }}>
       <Drawer.Screen
         name="overview"
         options={{
-          headerShown: true,
           title: 'Course Overview',
           drawerIcon: ({ color, size }) => (
             <Ionicons name="book-outline" size={size} color={color} />

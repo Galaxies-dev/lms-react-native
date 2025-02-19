@@ -36,7 +36,6 @@ const Page = () => {
   });
 
   const productPackage = packages?.find((pkg) => pkg.product.identifier === course?.revenuecatId);
-  console.log('🚀 ~ Page ~ productPackage:', productPackage);
 
   const scrollHandler = useAnimatedScrollHandler({
     onScroll: (event) => {
@@ -88,13 +87,9 @@ const Page = () => {
       router.replace(`/(app)/(authenticated)/course/${slug}/overview/overview`);
     } else {
       if (course.isPremium) {
-        console.log('COURSE: ', course.revenuecatId);
-        console.log('PACKAGES: ', productPackage);
         const result = await purchasePackage!(productPackage!);
-        console.log('🚀 ~ onStartCourse native~ result:', result);
 
         if (result.productIdentifier === course.revenuecatId) {
-          console.log('Purchased, add course to user');
           const result = await addUserToCourse(course.documentId.toString());
           if (result) {
             Alert.alert('Course purchased', 'You can now start the course', [

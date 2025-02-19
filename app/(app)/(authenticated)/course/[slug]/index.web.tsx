@@ -5,7 +5,6 @@ import {
   ActivityIndicator,
   Platform,
   useWindowDimensions,
-  Alert,
 } from 'react-native';
 import { useLocalSearchParams, router } from 'expo-router';
 import { useStrapi } from '@/providers/StrapiProvider';
@@ -93,16 +92,12 @@ const Page = () => {
     } else {
       if (course.isPremium) {
         // Premium course, needs to be purchased
-        console.log('COURSE: ', course.revenuecatId);
-        console.log('PACKAGES: ', productPackage);
         const result = await purchaseWebPackage!(productPackage!);
-        console.log('🚀 ~ onStartCourse web ~ result:', result);
 
         if (
           result &&
           result.customerInfo.entitlements.active[productPackage.webBillingProduct.title]
         ) {
-          console.log('Purchased, add course to user');
           const result = await addUserToCourse(course.documentId.toString());
           if (result) {
             toast('Thanks for your purchase. You can now start the course!', {

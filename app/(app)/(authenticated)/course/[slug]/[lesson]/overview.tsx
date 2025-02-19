@@ -9,6 +9,7 @@ import Animated, {
   useSharedValue,
   interpolate,
 } from 'react-native-reanimated';
+import { Ionicons } from '@expo/vector-icons';
 
 const HEADER_HEIGHT = 200;
 const HEADER_SCALE = 1.8;
@@ -24,8 +25,6 @@ const Page = () => {
     queryFn: () => getCourse(slug),
     enabled: !!slug,
   });
-
-  console.log('🚀 ~ Page ~ course:', course);
 
   const scrollHandler = useAnimatedScrollHandler({
     onScroll: (event) => {
@@ -92,15 +91,17 @@ const Page = () => {
       {/* Course Info Section */}
       <View className="px-4 pt-4 bg-white dark:bg-black flex-1">
         <Text className="text-2xl font-bold text-gray-800 dark:text-white">{course.title}</Text>
-        <TouchableOpacity
-          className="mt-4 bg-primary dark:border-gray-600 rounded-lg py-3"
-          onPress={() => router.push(`/course/${course.slug}/1`)}>
-          <Text className="text-center text-white font-medium">Start Course</Text>
-        </TouchableOpacity>
         <View className="flex-1 py-4 min-h-[100px]">
           <RichtTextContent blockContent={course.description} />
         </View>
       </View>
+
+      <TouchableOpacity
+        className="bg-primary py-3 flex-row items-center justify-center pb-safe gap-2"
+        onPress={() => router.push(`/course/${course.slug}/1`)}>
+        <Text className="text-center text-white font-medium">Start Course</Text>
+        <Ionicons name="arrow-forward" size={24} color="white" />
+      </TouchableOpacity>
     </Animated.ScrollView>
   );
 };

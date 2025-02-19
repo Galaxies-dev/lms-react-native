@@ -46,13 +46,7 @@ export const RevenueCatProvider = ({ children }: any) => {
   // Purchase a package
   const purchasePackage = async (pack: PurchasesPackage) => {
     try {
-      const result = await Purchases.purchasePackage(pack);
-      console.log('🚀 ~ purchasePackage ~ result:', result);
-      return result;
-      // Directly add our consumable product
-      // if (pack.product.identifier === 'rca_299_consume') {
-      //   setUser({ ...user, courses: [...user.courses, pack.product.identifier] });
-      // }
+      return await Purchases.purchasePackage(pack);
     } catch (e: any) {
       if (!e.userCancelled) {
         alert(e);

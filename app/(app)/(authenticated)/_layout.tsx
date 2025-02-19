@@ -1,7 +1,11 @@
 import { Stack } from 'expo-router';
-import { TouchableOpacity, useColorScheme } from 'react-native';
+import { Platform, TouchableOpacity, useColorScheme } from 'react-native';
 import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
+
+export const unstable_settings = {
+  initialRouteName: '(tabs)',
+};
 
 const Layout = () => {
   const colorScheme = useColorScheme();
@@ -16,7 +20,14 @@ const Layout = () => {
         },
       }}>
       <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-      <Stack.Screen name="courses" options={{ headerBackTitle: 'Back', title: 'Courses' }} />
+      <Stack.Screen
+        name="courses"
+        options={{
+          headerBackTitle: 'Back',
+          title: 'Courses',
+          headerShown: Platform.OS === 'web' ? false : true,
+        }}
+      />
       <Stack.Screen
         name="course/[slug]/index"
         options={{

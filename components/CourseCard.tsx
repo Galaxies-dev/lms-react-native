@@ -21,9 +21,9 @@ export default function CourseCard({
 
   return (
     <Link href={openLesson ? `/course/${slug}/${openLesson}` : `/course/${slug}`} asChild>
-      <Pressable className="mb-4">
+      <Pressable className="mb-4 hover:opacity-80">
         <View
-          className={`bg-white dark:bg-black rounded-2xl shadow-md overflow-hidden ${
+          className={`bg-white dark:bg-black rounded-2xl shadow-md overflow-hidden web:min-h-[300px] ${
             isPremium ? 'border-2 border-yellow-400' : ''
           }`}>
           <View className="relative">

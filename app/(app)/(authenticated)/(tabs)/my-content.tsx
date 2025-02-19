@@ -1,7 +1,7 @@
 import { useStrapi } from '@/providers/StrapiProvider';
 import { useQuery } from '@tanstack/react-query';
 import { Link } from 'expo-router';
-import { View, Text, TouchableOpacity } from 'react-native';
+import { View, Text, TouchableOpacity, Platform, ScrollView } from 'react-native';
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
 import Animated, { FadeIn } from 'react-native-reanimated';
 import CourseCard from '@/components/CourseCard';
@@ -14,7 +14,7 @@ export default function HomeScreen() {
   });
 
   return (
-    <View className="flex-1">
+    <View className="flex-1 web:max-w-[1200px] web:mx-auto">
       {data?.length === 0 && (
         <View className="flex-1 gap-4 items-center justify-center">
           <Text className="text-center text-lg  dark:text-white">
@@ -28,22 +28,50 @@ export default function HomeScreen() {
           </Link>
         </View>
       )}
-      <Animated.FlatList
-        data={data}
-        renderItem={({ item, index }) => (
-          <Animated.View entering={FadeIn.delay(index * 400).duration(800)}>
-            <CourseCard
-              {...item.course}
-              finished_percentage={item.finished_percentage}
-              hasCourse={true}
-              openLesson={item.next_lesson_index || 'overview/overview'}
-            />
-          </Animated.View>
-        )}
-        contentContainerClassName="pt-4 px-4"
-        keyExtractor={(item) => item.id.toString()}
-        showsVerticalScrollIndicator={false}
-      />
+      {Platform.OS === 'web' ? (
+        <ScrollView contentContainerClassName="web:max-w-[1200px] web:mx-auto">
+          <View className="flex-row flex-wrap gap-4 p-4">
+            {data?.map((item, index) => (
+              <Animated.View
+                key={item.id}
+                entering={FadeIn.delay(index * 400).duration(800)}
+                className="flex-1">
+                <CourseCard
+                  {...item.course}
+                  finished_percentage={item.finished_percentage}
+                  hasCourse={true}
+                  openLesson={
+                    item.finished_percentage === 100
+                      ? 'overview/overview'
+                      : item.next_lesson_index || 'overview/overview'
+                  }
+                />
+              </Animated.View>
+            ))}
+          </View>
+        </ScrollView>
+      ) : (
+        <Animated.FlatList
+          data={data}
+          renderItem={({ item, index }) => (
+            <Animated.View entering={FadeIn.delay(index * 400).duration(800)}>
+              <CourseCard
+                {...item.course}
+                finished_percentage={item.finished_percentage}
+                hasCourse={true}
+                openLesson={
+                  item.finished_percentage === 100
+                    ? 'overview/overview'
+                    : item.next_lesson_index || 'overview/overview'
+                }
+              />
+            </Animated.View>
+          )}
+          contentContainerClassName="pt-4 px-4"
+          keyExtractor={(item) => item.id.toString()}
+          showsVerticalScrollIndicator={false}
+        />
+      )}
     </View>
   );
 }

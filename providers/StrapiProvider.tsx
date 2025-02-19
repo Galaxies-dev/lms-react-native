@@ -1,5 +1,5 @@
 import { Course, Lesson, HomeInfo, StrapiUser, UserCourses } from '@/types/interfaces';
-import { createContext, useContext, ReactNode, useEffect, useState } from 'react';
+import { createContext, useContext, ReactNode } from 'react';
 import { useUser } from '@clerk/clerk-expo';
 import { useQueryClient } from '@tanstack/react-query';
 
@@ -23,47 +23,12 @@ interface StrapiContextType {
   getUserCompletedLessons: () => Promise<number>;
 }
 
-// Create the context
 const StrapiContext = createContext<StrapiContextType | undefined>(undefined);
 
 export function StrapiProvider({ children }: { children: ReactNode }) {
   const baseUrl = process.env.EXPO_PUBLIC_STRAPI_API_URL as string;
   const { user } = useUser();
   const queryClient = useQueryClient();
-
-  // useEffect(() => {
-  //   if (user) {
-  //     getActiveStrapiUserIdForClerkId(user.id).then((result) => {
-  //       console.log(' result:', result);
-  //       // Strapi 5: use documentId
-  //       setActiveStrapiUserId(result.id);
-  //     });
-  //   } else {
-  //     console.log('No user');
-  //     setActiveStrapiUserId(null);
-  //   }
-  // }, [user]);
-
-  // const getActiveStrapiUserIdForClerkId = async (clerkId: string) => {
-  //   try {
-  //     console.log('GET ACTIVE USER');
-
-  //     const response = await fetch(
-  //       `${baseUrl}/api/users?filters[clerkId][$eq]=${clerkId}`
-  //     );
-
-  //     if (!response.ok) {
-  //       throw new Error(`HTTP error! status: ${response.status}`);
-  //     }
-
-  //     const result = await response.json();
-  //     console.log('🚀 ~ getActiveStrapiUserIdForClerkId ~ result:', result);
-  //     return result[0];
-  //   } catch (error) {
-  //     console.error('Error creating user:', error);
-  //     throw error;
-  //   }
-  // };
 
   const createUser = async (user: StrapiUser): Promise<StrapiUser> => {
     try {
@@ -118,7 +83,7 @@ export function StrapiProvider({ children }: { children: ReactNode }) {
       }
 
       const result = await response.json();
-      console.log('🚀 ~ getCourse ~ result:', result);
+
       result.data[0] = {
         ...result.data[0],
         image: `${baseUrl}${result.data[0].image.url}`,
@@ -290,7 +255,6 @@ export function StrapiProvider({ children }: { children: ReactNode }) {
       // Also update user-course with progress and lesson_index
       const userCourse = await getUserCourses();
       const userCourseToUpdate = userCourse.find((course) => course.course.documentId === courseId);
-      console.log('🚀 ~ markLessonAsCompleted ~ userCourseToUpdate:', userCourseToUpdate);
       if (userCourseToUpdate) {
         updateUserCourseProgress(userCourseToUpdate.documentId, progress, nextLessonIndex);
       }
@@ -343,12 +307,10 @@ export function StrapiProvider({ children }: { children: ReactNode }) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
       const data = await response.json();
-      console.log('🚀 ~ getUserCompletedLessons ~ data:', data);
+
       // Filter out duplicate lessons by documentId
       const lessonIds = data.data.map((item: any) => item.lesson.documentId);
-      console.log('🚀 ~ getUserCompletedLessons ~ lessonIds:', lessonIds);
       const uniqueLessonIds = [...new Set(lessonIds)];
-      console.log('🚀 ~ getUserCompletedLessons ~ uniqueLessonIds:', uniqueLessonIds);
       return uniqueLessonIds.length;
     } catch (error) {
       throw error;

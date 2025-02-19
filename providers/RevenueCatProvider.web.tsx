@@ -18,8 +18,6 @@ export const RevenueCatProvider = ({ children }: any) => {
 
   useEffect(() => {
     const init = async () => {
-      console.log('WEB INIT');
-
       Purchases.configure(APIKeys.web, clerkUser!.id);
       setIsReady(true);
 
@@ -52,6 +50,7 @@ export const RevenueCatProvider = ({ children }: any) => {
       } else {
         // Handle errors
         console.log('error', e);
+        throw e;
       }
     }
   };
