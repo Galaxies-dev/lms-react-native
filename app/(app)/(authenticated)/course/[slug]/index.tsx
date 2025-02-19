@@ -103,6 +103,7 @@ const Page = () => {
         }
       } else {
         const result = await addUserToCourse(course.documentId.toString());
+        console.log('🚀 ~ onStartCourse ~ result:', result);
         if (result) {
           router.replace('/my-content');
         }

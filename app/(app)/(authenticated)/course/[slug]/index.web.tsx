@@ -15,6 +15,7 @@ import Animated, {
   useAnimatedStyle,
   useSharedValue,
   interpolate,
+  FadeIn,
 } from 'react-native-reanimated';
 import { useState } from 'react';
 import { useRevenueCat } from '@/providers/RevenueCatProvider';
@@ -121,6 +122,7 @@ const Page = () => {
 
   return (
     <Animated.ScrollView
+      entering={FadeIn}
       className="flex-1 bg-white dark:bg-black"
       onScroll={scrollHandler}
       scrollEventThrottle={16}
@@ -148,7 +150,7 @@ const Page = () => {
 
         <Pressable
           onPress={onStartCourse}
-          className="mt-4 bg-blue-500 rounded-lg py-3 items-center">
+          className="mt-4 bg-blue-500 rounded-lg py-3 items-center max-w-sm ">
           <Text className="text-white font-semibold text-lg">
             {hasCourse
               ? 'Continue Course'
@@ -158,16 +160,9 @@ const Page = () => {
           </Text>
         </Pressable>
 
-        {Platform.OS === 'web' && (
-          <View className="py-4">
-            <RichtTextContent blockContent={course.description} />
-          </View>
-        )}
-        {Platform.OS !== 'web' && (
-          <View className="flex-1 my-4 min-h-[200px]">
-            <RichtTextContent blockContent={course.description} />
-          </View>
-        )}
+        <View className="py-4">
+          <RichtTextContent blockContent={course.description} />
+        </View>
 
         {/* Lessons Section */}
         <Text className="mt-6 mb-2 text-xl font-semibold text-gray-800 dark:text-white">

@@ -8,6 +8,7 @@ import Animated, {
   useAnimatedStyle,
   useSharedValue,
   interpolate,
+  FadeIn,
 } from 'react-native-reanimated';
 import { Ionicons } from '@expo/vector-icons';
 
@@ -69,6 +70,7 @@ const Page = () => {
   return (
     <Animated.ScrollView
       className="bg-white dark:bg-black"
+      entering={FadeIn}
       onScroll={scrollHandler}
       scrollEventThrottle={16}
       showsVerticalScrollIndicator={false}

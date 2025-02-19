@@ -74,7 +74,6 @@ export function StrapiProvider({ children }: { children: ReactNode }) {
   };
 
   const getCourse = async (slug: string): Promise<Course> => {
-    console.log('🚀 ~ getCourse ~ slug:', slug);
     try {
       const response = await fetch(`${baseUrl}/api/courses?filters[slug][$eq]=${slug}&populate=*`);
 
@@ -178,13 +177,11 @@ export function StrapiProvider({ children }: { children: ReactNode }) {
   const addUserToCourse = async (courseId: string): Promise<UserCourses> => {
     try {
       const body = {
-        data: {
-          course: courseId,
-          clerkId: user?.id,
-        },
+        courseId,
+        clerkId: user?.id,
       };
 
-      const response = await fetch(`${baseUrl}/api/user-courses`, {
+      const response = await fetch(`/api/add-user-course`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -197,7 +194,8 @@ export function StrapiProvider({ children }: { children: ReactNode }) {
       }
       queryClient.invalidateQueries({ queryKey: ['userCourses'] });
       const result = await response.json();
-      return result.data;
+      console.log('🚀 ~ addUserToCourse ~ result:', result);
+      return result;
     } catch (error) {
       throw error;
     }

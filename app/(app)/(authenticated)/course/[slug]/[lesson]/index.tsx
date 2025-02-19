@@ -59,6 +59,7 @@ const Page = () => {
     );
 
     queryClient.invalidateQueries({ queryKey: ['lessons', slug] });
+    queryClient.invalidateQueries({ queryKey: ['userCourses'] });
     router.push(`/course/${slug}/${parseInt(lessonIndex) + 1}`);
   };
 
