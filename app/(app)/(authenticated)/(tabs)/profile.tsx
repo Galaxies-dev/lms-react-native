@@ -3,11 +3,14 @@ import { useAuth } from '@clerk/clerk-expo';
 import { useUser } from '@clerk/clerk-expo';
 import { useQuery } from '@tanstack/react-query';
 import { useStrapi } from '@/providers/StrapiProvider';
+import { useRevenueCat } from '@/providers/RevenueCatProvider';
+
 const Page = () => {
   const { signOut } = useAuth();
   const { user } = useUser();
-  console.log('🚀 ~ Page ~ user:', user);
   const { getUserCourses, getUserCompletedLessons } = useStrapi();
+  const { packages, purchasePackage } = useRevenueCat();
+  console.log('🚀 ~ Page ~ packages:', packages);
 
   const { data: userCourses } = useQuery({
     queryKey: ['userCourses'],
@@ -19,14 +22,12 @@ const Page = () => {
     queryFn: () => getUserCompletedLessons(),
   });
 
-  console.log(completedLessons);
-
   return (
     <ScrollView className="flex-1 bg-white p-4">
       <View className="flex-row items-center mb-6">
         <Image source={{ uri: user?.imageUrl }} className="w-20 h-20 rounded-full mr-4" />
         <View className="flex-1">
-          <Text className="text-lg font-bold mb-1">{user?.primaryEmailAddress?.emailAddress}</Text>
+          <Text className="text-md font-bold mb-1">{user?.primaryEmailAddress?.emailAddress}</Text>
           <Text className="text-base text-gray-600">
             User since {new Date(user?.createdAt!).toDateString()}
           </Text>
@@ -80,6 +81,16 @@ const Page = () => {
       </View>
 
       <Button title="Sign Out" onPress={() => signOut()} color="#FF3B30" />
+
+      {/* <View>
+        {packages.map((pkg: any) => (
+          <Button
+            title={pkg.webBillingProduct.title}
+            onPress={() => purchasePackage!(pkg)}
+            color="#ff00ff"
+          />
+        ))}
+      </View> */}
     </ScrollView>
   );
 };

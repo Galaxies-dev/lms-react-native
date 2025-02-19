@@ -10,6 +10,7 @@ export interface Course {
   slug: string;
   isPremium: boolean;
   lessons: Lesson[];
+  revenuecatId: string;
 }
 
 export interface UserCourses {

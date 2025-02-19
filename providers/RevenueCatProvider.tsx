@@ -1,8 +1,8 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 import { Platform } from 'react-native';
 import Purchases, { LOG_LEVEL, PurchasesPackage } from 'react-native-purchases';
-import { CustomerInfo } from 'react-native-purchases';
 import React from 'react';
+import { RevenueCatProps } from '@/providers/RevenueCat';
 
 // Use your RevenueCat API keys
 const APIKeys = {
@@ -10,21 +10,9 @@ const APIKeys = {
   google: process.env.EXPO_PUBLIC_REVENUECAT_ANDROID_KEY as string,
 };
 
-interface RevenueCatProps {
-  purchasePackage?: (pack: PurchasesPackage) => Promise<void>;
-  restorePermissions?: () => Promise<CustomerInfo>;
-  user: UserState;
-  packages: PurchasesPackage[];
-}
-
-export interface UserState {
-  courses: string[];
-}
-
 const RevenueCatContext = createContext<RevenueCatProps | null>(null);
 
 export const RevenueCatProvider = ({ children }: any) => {
-  const [user, setUser] = useState<UserState>({ courses: [] });
   const [packages, setPackages] = useState<PurchasesPackage[]>([]);
   const [isReady, setIsReady] = useState(false);
 
@@ -39,11 +27,6 @@ export const RevenueCatProvider = ({ children }: any) => {
 
       // Use more logging during debug if want!
       Purchases.setLogLevel(LOG_LEVEL.DEBUG);
-
-      // Listen for customer updates
-      Purchases.addCustomerInfoUpdateListener(async (info) => {
-        updateCustomerInformation(info);
-      });
 
       // Load all offerings and the user object with entitlements
       await loadOfferings();
@@ -60,31 +43,21 @@ export const RevenueCatProvider = ({ children }: any) => {
     }
   };
 
-  // Update user state based on previous purchases
-  const updateCustomerInformation = async (customerInfo: CustomerInfo) => {
-    const newUser: UserState = { courses: [] };
-
-    if (customerInfo?.entitlements.active['Advanced Yoga Mastery'] !== undefined) {
-      console.log('customerInfo?.entitlements.active', customerInfo?.entitlements.active);
-      newUser.courses.push(customerInfo?.entitlements.active['Advanced Yoga Mastery'].identifier);
-    }
-
-    setUser(newUser);
-  };
-
   // Purchase a package
   const purchasePackage = async (pack: PurchasesPackage) => {
     try {
-      await Purchases.purchasePackage(pack);
-
+      const result = await Purchases.purchasePackage(pack);
+      console.log('🚀 ~ purchasePackage ~ result:', result);
+      return result;
       // Directly add our consumable product
-      if (pack.product.identifier === 'rca_299_consume') {
-        setUser({ ...user, courses: [...user.courses, pack.product.identifier] });
-      }
+      // if (pack.product.identifier === 'rca_299_consume') {
+      //   setUser({ ...user, courses: [...user.courses, pack.product.identifier] });
+      // }
     } catch (e: any) {
       if (!e.userCancelled) {
         alert(e);
       }
+      throw e;
     }
   };
 
@@ -96,7 +69,6 @@ export const RevenueCatProvider = ({ children }: any) => {
 
   const value = {
     restorePermissions,
-    user,
     packages,
     purchasePackage,
   };

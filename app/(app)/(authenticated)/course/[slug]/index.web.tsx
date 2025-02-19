@@ -21,6 +21,7 @@ import { useState } from 'react';
 import { useRevenueCat } from '@/providers/RevenueCatProvider';
 const HEADER_HEIGHT = 200; // Increased height for better parallax effect
 const HEADER_SCALE = 1.8; // Maximum scale for the parallax effect
+import { Toaster, toast } from 'sonner';
 
 const Page = () => {
   const { slug } = useLocalSearchParams<{ slug: string }>();
@@ -28,14 +29,16 @@ const Page = () => {
   const { width: windowWidth } = useWindowDimensions();
   const scrollY = useSharedValue(0);
   const [hasCourse, setHasCourse] = useState(false);
-  const { packages, purchasePackage } = useRevenueCat();
+  const { webPackages, purchaseWebPackage } = useRevenueCat();
 
   const { data: course, isLoading } = useQuery({
     queryKey: ['course', slug],
     queryFn: () => getCourse(slug),
   });
 
-  const productPackage = packages?.find((pkg) => pkg.product.identifier === course?.revenuecatId);
+  const productPackage = webPackages?.find(
+    (pkg) => pkg.webBillingProduct.identifier === course?.revenuecatId
+  );
   console.log('🚀 ~ Page ~ productPackage:', productPackage);
 
   const scrollHandler = useAnimatedScrollHandler({
@@ -85,28 +88,34 @@ const Page = () => {
 
   const onStartCourse = async () => {
     if (hasCourse) {
+      // User already has course access, redirect to overview page
       router.replace(`/(app)/(authenticated)/course/${slug}/overview/overview`);
     } else {
       if (course.isPremium) {
+        // Premium course, needs to be purchased
         console.log('COURSE: ', course.revenuecatId);
         console.log('PACKAGES: ', productPackage);
-        const result = await purchasePackage!(productPackage!);
-        console.log('🚀 ~ onStartCourse native~ result:', result);
+        const result = await purchaseWebPackage!(productPackage!);
+        console.log('🚀 ~ onStartCourse web ~ result:', result);
 
-        if (result.productIdentifier === course.revenuecatId) {
+        if (
+          result &&
+          result.customerInfo.entitlements.active[productPackage.webBillingProduct.title]
+        ) {
           console.log('Purchased, add course to user');
           const result = await addUserToCourse(course.documentId.toString());
           if (result) {
-            Alert.alert('Course purchased', 'You can now start the course', [
-              {
-                text: 'Start now',
-                onPress: () =>
+            toast('Thanks for your purchase. You can now start the course!', {
+              action: {
+                label: 'Start Course',
+                onClick: () =>
                   router.replace(`/(app)/(authenticated)/course/${slug}/overview/overview`),
               },
-            ]);
+            });
           }
         }
       } else {
+        // Free course, add user to course
         const result = await addUserToCourse(course.documentId.toString());
         if (result) {
           router.replace('/my-content');
@@ -121,6 +130,8 @@ const Page = () => {
       onScroll={scrollHandler}
       scrollEventThrottle={16}
       contentContainerStyle={{ flexGrow: 1 }}>
+      <Toaster position="top-right" />
+
       <View className="relative" style={{ height: HEADER_HEIGHT }}>
         <Animated.Image
           source={{ uri: course.image }}
@@ -147,7 +158,7 @@ const Page = () => {
             {hasCourse
               ? 'Continue Course'
               : course.isPremium
-              ? `Purchase Course for ${productPackage?.product.priceString}`
+              ? `Purchase Course for ${productPackage?.webBillingProduct.currentPrice.formattedPrice}`
               : 'Start Course'}
           </Text>
         </Pressable>

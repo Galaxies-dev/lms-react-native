@@ -1,12 +1,15 @@
-import { View, Text } from 'react-native';
+import { View, ActivityIndicator, Platform } from 'react-native';
 import { useQuery } from '@tanstack/react-query';
 import { useStrapi } from '@/providers/StrapiProvider';
 import HomeBlock from '@/components/HomeBlock';
 import { Stack } from 'expo-router';
+import { useState } from 'react';
 
 export default function HomeScreen() {
   const { getHomeInfo } = useStrapi();
-  const { data, isLoading } = useQuery({
+  const [isLoading, setIsLoading] = useState(Platform.OS === 'web' ? false : true);
+
+  const { data } = useQuery({
     queryKey: ['homeInfo'],
     queryFn: () => getHomeInfo(),
   });
@@ -14,16 +17,20 @@ export default function HomeScreen() {
   return (
     <View className="h-full">
       <Stack.Screen options={{ title: data?.title }} />
-      {isLoading ? (
-        <Text>Loading...</Text>
-      ) : (
-        <HomeBlock
-          homeInfo={data!}
-          dom={{
-            scrollEnabled: false,
-          }}
-        />
+      {isLoading && (
+        <View className="flex-1 items-center justify-center">
+          <ActivityIndicator />
+        </View>
       )}
+      <HomeBlock
+        homeInfo={data!}
+        dom={{
+          scrollEnabled: false,
+          onLoadEnd: () => {
+            setIsLoading(false);
+          },
+        }}
+      />
     </View>
   );
 }

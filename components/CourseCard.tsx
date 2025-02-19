@@ -2,7 +2,11 @@ import { View, Text, Image, Pressable } from 'react-native';
 import { Link } from 'expo-router';
 import { Course } from '@/types/interfaces';
 
-type CourseCardProps = Course & { openLesson?: string; finished_percentage?: number };
+type CourseCardProps = Course & {
+  openLesson?: string;
+  finished_percentage?: number;
+  hasCourse?: boolean;
+};
 
 export default function CourseCard({
   title,
@@ -11,7 +15,10 @@ export default function CourseCard({
   isPremium,
   openLesson,
   finished_percentage,
+  hasCourse = false,
 }: CourseCardProps) {
+  console.log('finished_percentage', finished_percentage);
+
   return (
     <Link href={openLesson ? `/course/${slug}/${openLesson}` : `/course/${slug}`} asChild>
       <Pressable className="mb-4">
@@ -36,7 +43,7 @@ export default function CourseCard({
               {title}
             </Text>
           </View>
-          {finished_percentage && (
+          {hasCourse && (
             <View className="px-4 pb-4">
               <Text className="text-xs font-semibold text-gray-800 dark:text-white mb-2">
                 {finished_percentage || 0}%

@@ -35,6 +35,7 @@ export default function HomeScreen() {
             <CourseCard
               {...item.course}
               finished_percentage={item.finished_percentage}
+              hasCourse={true}
               openLesson={item.next_lesson_index || 'overview/overview'}
             />
           </Animated.View>
