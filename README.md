@@ -55,6 +55,13 @@ To build the app, perform the following steps:
 2. Update the `.env` file of the React Native App with the correct RevenueCat API Key
 3. Insert the RevenueCat identifier for your product in the Strapi CMS of a premium course
 
+## Demo
+
+<div style="display: flex; flex-direction: 'row';">
+<img src="./screenshots/browse.gif" width=30%>
+<img src="./screenshots/course.gif" width=30%>
+
+</div>
 
 ## App Screenshots
 
@@ -63,7 +70,6 @@ To build the app, perform the following steps:
 <img src="./screenshots/app2.png" width=30%>
 <img src="./screenshots/app3.png" width=30%>
 <img src="./screenshots/app4.png" width=30%>
-<img src="./screenshots/app5.png" width=30%>
 <img src="./screenshots/app6.png" width=30%>
 <img src="./screenshots/app7.png" width=30%>
 
@@ -72,21 +78,13 @@ To build the app, perform the following steps:
 ## Web Screenshots
 
 <div style="display: flex; flex-direction: 'row';">
-<img src="./screenshots/web1.png" width=30%>
-<img src="./screenshots/web2.png" width=30%>
-<img src="./screenshots/web3.png" width=30%>
-<img src="./screenshots/web4.png" width=30%>
-<img src="./screenshots/web5.png" width=30%>
-<img src="./screenshots/web6.png" width=30%>
+<img src="./screenshots/web1.png" width=40%>
+<img src="./screenshots/web2.png" width=40%>
+<img src="./screenshots/web3.png" width=40%>
+<img src="./screenshots/web4.png" width=40%>
+<img src="./screenshots/web5.png" width=40%>
+<img src="./screenshots/web6.png" width=40%>
 
-
-</div>
-
-## Demo
-
-<div style="display: flex; flex-direction: 'row';">
-<img src="./screenshots/browse.gif" width=30%>
-<img src="./screenshots/course.gif" width=30%>
 
 </div>
 
