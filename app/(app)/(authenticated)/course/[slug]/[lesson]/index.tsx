@@ -85,7 +85,7 @@ const Page = () => {
         />
       )}
 
-      <Stack.Screen options={{ title: lesson?.name }} />
+      <Stack.Screen options={{ title: lesson?.name || '' }} />
       <VideoView
         player={player}
         allowsFullscreen

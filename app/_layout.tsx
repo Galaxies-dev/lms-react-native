@@ -67,9 +67,9 @@ const InitialLayout = () => {
   }
 
   return (
-    <Stack>
-      <Stack.Screen name="login" options={{ headerShown: false }} />
-      <Stack.Screen name="(app)" options={{ headerShown: false }} />
+    <Stack screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="login" />
+      <Stack.Screen name="(app)" />
     </Stack>
   );
 };
@@ -78,7 +78,10 @@ const RootLayout = () => {
   const colorScheme = useColorScheme();
 
   return (
-    <ClerkProvider tokenCache={tokenCache} publishableKey={publishableKey}>
+    <ClerkProvider
+      tokenCache={tokenCache}
+      publishableKey={publishableKey}
+      waitlistUrl="http://localhost:8081/">
       <GestureHandlerRootView style={{ flex: 1 }}>
         <ClerkLoaded>
           <QueryClientProvider client={queryClient}>

@@ -1,12 +1,4 @@
-import {
-  View,
-  Text,
-  Pressable,
-  ActivityIndicator,
-  Platform,
-  useWindowDimensions,
-  Alert,
-} from 'react-native';
+import { View, Text, Pressable, ActivityIndicator, useWindowDimensions, Alert } from 'react-native';
 import { useLocalSearchParams, router } from 'expo-router';
 import { useStrapi } from '@/providers/StrapiProvider';
 import { useQuery } from '@tanstack/react-query';
@@ -83,17 +75,14 @@ const Page = () => {
   }
 
   const onStartCourse = async () => {
-    console.log('🚀 ~ onStartCourse ~ hasCourse:', hasCourse);
     if (hasCourse) {
       router.replace(`/(app)/(authenticated)/course/${slug}/overview/overview`);
     } else {
       if (course.isPremium) {
         const result = await purchasePackage!(productPackage!);
-        console.log('🚀 ~ onStartCourse ~ result:', result);
 
         if (result.productIdentifier === course.revenuecatId) {
           const result = await addUserToCourse(course.documentId.toString());
-          console.log('🚀 ~ ADD ~ result:', result);
           if (result) {
             Alert.alert('Course purchased', 'You can now start the course', [
               {
@@ -106,7 +95,6 @@ const Page = () => {
         }
       } else {
         const result = await addUserToCourse(course.documentId.toString());
-        console.log('🚀 ~ onStartCourse ~ result:', result);
         if (result) {
           router.replace('/my-content');
         }

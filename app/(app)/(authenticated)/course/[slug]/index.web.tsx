@@ -1,11 +1,4 @@
-import {
-  View,
-  Text,
-  Pressable,
-  ActivityIndicator,
-  Platform,
-  useWindowDimensions,
-} from 'react-native';
+import { View, Text, Pressable, ActivityIndicator, useWindowDimensions } from 'react-native';
 import { useLocalSearchParams, router } from 'expo-router';
 import { useStrapi } from '@/providers/StrapiProvider';
 import { useQuery } from '@tanstack/react-query';
@@ -39,7 +32,6 @@ const Page = () => {
   const productPackage = webPackages?.find(
     (pkg) => pkg.webBillingProduct.identifier === course?.revenuecatId
   );
-  console.log('🚀 ~ Page ~ productPackage:', productPackage);
 
   const scrollHandler = useAnimatedScrollHandler({
     onScroll: (event) => {
