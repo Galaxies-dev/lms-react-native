@@ -1,6 +1,6 @@
 # React Native LMS with Strapi, Clerk & RevenueCat
 
-This is a React Native LMS using a [Strapi](https://strapi.io/) backend for course content, [Clerk](https://go.clerk.com/1vaJMZL) for user authentication and [RevenueCat](https://www.revenuecat.com/docs/getting-started/installation/reactnative?utm_medium=sponsored&utm_source=youtube&utm_campaign=SimonGrimm) for in-app purchases.
+This is a React Native LMS using a [Strapi](https://strapi.io/) backend for course content, [Clerk](https://go.clerk.com/1vaJMZL) for user authentication and [RevenueCat](https://www.revenuecat.com/?utm_medium=sponsored&utm_source=simon_grimm&utm_campaign=general_sponsorship ) for in-app purchases.
 
 Featured Packages:
 
