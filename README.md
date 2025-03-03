@@ -1,6 +1,6 @@
 # React Native LMS with Strapi, Clerk & RevenueCat
 
-This is a React Native LMS using a [Strapi](https://strapi.io/) backend for course content, [Clerk](https://go.clerk.com/1vaJMZL) for user authentication and [RevenueCat](https://www.revenuecat.com/?utm_medium=sponsored&utm_source=simon_grimm&utm_campaign=general_sponsorship ) for in-app purchases.
+This is a React Native LMS using a [Strapi](https://strapi.io/) backend for course content, [Clerk](https://go.clerk.com/qnq1nUv) for user authentication and [RevenueCat](https://www.revenuecat.com/?utm_medium=sponsored&utm_source=simon_grimm&utm_campaign=general_sponsorship) for in-app purchases.
 
 Featured Packages:
 
@@ -9,7 +9,7 @@ Featured Packages:
 - [Expo API Routes](https://docs.expo.dev/router/reference/api-routes/) for API calls
 - [NativeWind](https://www.nativewind.dev/) for styling
 - [Strapi](https://strapi.io/) for content management
-- [Clerk](https://go.clerk.com/1vaJMZL) for user authentication
+- [Clerk](https://go.clerk.com/qnq1nUv) for user authentication
 - [RevenueCat](https://www.revenuecat.com/?utm_medium=sponsored&utm_source=simon_grimm&utm_campaign=general_sponsorship) for subscription management
 - [Blocks Renderer](https://github.com/strapi/blocks-react-renderer) for content blocks
 - [Reanimated](https://docs.swmansion.com/react-native-reanimated/) 3 for animations
